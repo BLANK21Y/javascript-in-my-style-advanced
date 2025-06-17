@@ -580,3 +580,9 @@ section {
   transform: translateY(0);
   pointer-events: all;
 }
+
+/* Ensure proper transition reset */
+.page-transition:not(.active) {
+  transform: translateY(100%);
+  pointer-events: none;
+}
