@@ -22,6 +22,8 @@ function initApp() {
   setupSearch();
   setupSmoothScrolling();
   setupIntersectionObserver();
+  setupTagClickHandlers();
+  setupBackButtonHandler();
 }
 
 /**
@@ -227,11 +229,6 @@ function debounce(func, wait) {
   };
 }
 
-// Initialize the application when DOM is fully loaded
-document.addEventListener('DOMContentLoaded', initApp);
-
-// Add this to the end of your app.js file
-
 // Create page transition element
 function createPageTransition() {
   // Check if it already exists
@@ -284,20 +281,64 @@ function handleTagClick(e) {
   }
 }
 
-// Modify your initApp function to include setupTagClickHandlers
-function initApp() {
-  createCategories();
-  createAlphabeticalList();
-  setupSearch();
-  setupSmoothScrolling();
-  setupIntersectionObserver();
-  setupTagClickHandlers(); // Add this line
+// Handle page transition removal
+function handlePageTransition() {
+  const pageTransition = document.querySelector('.page-transition');
+  
+  if (pageTransition) {
+    // Remove the active class when the page becomes visible
+    pageTransition.classList.remove('active');
+    
+    // Force a reflow to ensure the transition takes effect
+    pageTransition.offsetHeight;
+  }
 }
+
+// Set up back button and page visibility handlers
+function setupBackButtonHandler() {
+  // Handle back/forward navigation
+  window.addEventListener('pageshow', function(event) {
+    // This fires when the page is shown, including back button navigation
+    handlePageTransition();
+  });
+
+  // Handle visibility change (when user switches tabs and comes back)
+  document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+      handlePageTransition();
+    }
+  });
+
+  // Handle focus event as a fallback
+  window.addEventListener('focus', function() {
+    handlePageTransition();
+  });
+
+  // Ensure transition is cleared on page load
+  window.addEventListener('load', function() {
+    handlePageTransition();
+  });
+}
+
+// Initialize the application when DOM is fully loaded
+document.addEventListener('DOMContentLoaded', initApp);
+
+// Also add this immediate check for when the script loads
+document.addEventListener('DOMContentLoaded', function() {
+  // Ensure any existing transition is cleared immediately
+  setTimeout(handlePageTransition, 50);
+});
 
 // If the page is already loaded, set up the handlers immediately
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
-  setTimeout(setupTagClickHandlers, 1);
+  setTimeout(() => {
+    setupTagClickHandlers();
+    handlePageTransition();
+  }, 1);
 } else {
   // Otherwise wait for DOMContentLoaded
-  document.addEventListener('DOMContentLoaded', setupTagClickHandlers);
+  document.addEventListener('DOMContentLoaded', () => {
+    setupTagClickHandlers();
+    handlePageTransition();
+  });
 }
