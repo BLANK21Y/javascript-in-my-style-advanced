@@ -1,6 +1,7 @@
 /**
  * JavaScript Tag Data
  * Comprehensive categorization of JavaScript concepts
+ * Updated with skin and black theme styling
  */
 
 const tagData = {
