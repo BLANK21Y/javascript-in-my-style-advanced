@@ -1,5 +1,6 @@
 /**
  * JavaScript Explorer Application JavaScript
+ * Enhanced with skin and black theme support
  * Handles dynamic content loading, search, filtering, and interactions
  */
 
@@ -7,6 +8,7 @@
 const categoriesContainer = document.getElementById('categories-container');
 const alphabeticalContainer = document.getElementById('alphabetical-container');
 const searchInput = document.getElementById('search-input');
+const themeToggle = document.getElementById('theme-toggle');
 
 // Cache DOM elements and tag data
 let allTagElements = [];
@@ -17,6 +19,7 @@ let allTagsMap = new Map();
  * Initialize the application
  */
 function initApp() {
+  initTheme();
   createCategories();
   createAlphabeticalList();
   setupSearch();
@@ -24,6 +27,62 @@ function initApp() {
   setupIntersectionObserver();
   setupTagClickHandlers();
   setupBackButtonHandler();
+  setupThemeToggle();
+}
+
+/**
+ * Initialize theme system
+ */
+function initTheme() {
+  // Check for saved theme preference or default to light mode
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  
+  // Update theme toggle icon
+  updateThemeToggleIcon(savedTheme);
+}
+
+/**
+ * Setup theme toggle functionality
+ */
+function setupThemeToggle() {
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    // Apply theme with smooth transition
+    document.documentElement.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    
+    // Save preference
+    localStorage.setItem('theme', newTheme);
+    
+    // Update toggle icon
+    updateThemeToggleIcon(newTheme);
+    
+    // Add rotation animation
+    themeToggle.style.transform = 'rotate(360deg)';
+    setTimeout(() => {
+      themeToggle.style.transform = '';
+      document.documentElement.style.transition = '';
+    }, 300);
+  });
+}
+
+/**
+ * Update theme toggle icon based on current theme
+ */
+function updateThemeToggleIcon(theme) {
+  const sunIcon = themeToggle.querySelector('.sun-icon');
+  const moonIcon = themeToggle.querySelector('.moon-icon');
+  
+  if (theme === 'dark') {
+    sunIcon.style.display = 'block';
+    moonIcon.style.display = 'none';
+  } else {
+    sunIcon.style.display = 'none';
+    moonIcon.style.display = 'block';
+  }
 }
 
 /**
@@ -73,6 +132,15 @@ function createCategories() {
       tagLink.dataset.category = category.name;
       tagLink.innerHTML = `<span class="tag-name">${tag.name}</span>`;
       
+      // Add hover effect
+      tagLink.addEventListener('mouseenter', () => {
+        tagLink.style.transform = 'translateX(4px)';
+      });
+      
+      tagLink.addEventListener('mouseleave', () => {
+        tagLink.style.transform = '';
+      });
+      
       tagItem.appendChild(tagLink);
       tagList.appendChild(tagItem);
     });
@@ -101,7 +169,7 @@ function createAlphabeticalList() {
   alphabeticalContainer.className = 'tag-list';
   
   // Create tag elements
-  allTags.forEach(tag => {
+  allTags.forEach((tag, index) => {
     const tagItem = document.createElement('li');
     const tagElement = document.createElement('a');
     // Link to local JavaScript file
@@ -110,6 +178,9 @@ function createAlphabeticalList() {
     tagElement.dataset.tag = tag.name;
     tagElement.innerHTML = `${tag.name}`;
     
+    // Add staggered animation delay
+    tagElement.style.animationDelay = `${index * 10}ms`;
+    
     tagItem.appendChild(tagElement);
     alphabeticalContainer.appendChild(tagItem);
     allTagElements.push(tagElement);
@@ -117,27 +188,65 @@ function createAlphabeticalList() {
 }
 
 /**
- * Sets up search functionality
+ * Sets up search functionality with enhanced UX
  */
 function setupSearch() {
   searchInput.addEventListener('input', debounce(handleSearch, 200));
+  
+  // Add search focus effects
+  searchInput.addEventListener('focus', () => {
+    searchInput.parentElement.style.transform = 'scale(1.02)';
+  });
+  
+  searchInput.addEventListener('blur', () => {
+    searchInput.parentElement.style.transform = '';
+  });
+  
+  // Add keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+    
+    if (e.key === 'Escape' && document.activeElement === searchInput) {
+      searchInput.blur();
+      searchInput.value = '';
+      handleSearch();
+    }
+  });
 }
 
 /**
- * Handle search input and filter tags
+ * Handle search input and filter tags with improved feedback
  */
 function handleSearch() {
   const searchTerm = searchInput.value.trim().toLowerCase();
   
   // Hide or show tags in alphabetical list
   let matchFound = false;
+  let visibleCount = 0;
   
   // Filter alphabetical tags
   allTagElements.forEach(tagEl => {
     const tagName = tagEl.dataset.tag.toLowerCase();
-    const isVisible = tagName.includes(searchTerm);
+    const isVisible = !searchTerm || tagName.includes(searchTerm);
+    
     tagEl.parentElement.style.display = isVisible ? 'block' : 'none';
-    if (isVisible) matchFound = true;
+    
+    if (isVisible) {
+      matchFound = true;
+      visibleCount++;
+      
+      // Highlight matching text
+      if (searchTerm) {
+        const regex = new RegExp(`(${searchTerm})`, 'gi');
+        const highlightedText = tagEl.dataset.tag.replace(regex, '<mark>$1</mark>');
+        tagEl.innerHTML = highlightedText;
+      } else {
+        tagEl.innerHTML = tagEl.dataset.tag;
+      }
+    }
   });
   
   // Filter category cards and their tags
@@ -148,11 +257,22 @@ function handleSearch() {
     tagLinks.forEach(item => {
       const link = item.querySelector('.tag-link');
       const tagName = link.dataset.tag.toLowerCase();
-      if (tagName.includes(searchTerm)) {
-        item.style.display = 'block';
+      const isVisible = !searchTerm || tagName.includes(searchTerm);
+      
+      item.style.display = isVisible ? 'block' : 'none';
+      
+      if (isVisible) {
         hasVisibleTags = true;
-      } else {
-        item.style.display = 'none';
+        
+        // Highlight matching text in category tags
+        const tagNameSpan = link.querySelector('.tag-name');
+        if (searchTerm) {
+          const regex = new RegExp(`(${searchTerm})`, 'gi');
+          const highlightedText = tagNameSpan.textContent.replace(regex, '<mark>$1</mark>');
+          tagNameSpan.innerHTML = highlightedText;
+        } else {
+          tagNameSpan.innerHTML = tagNameSpan.textContent;
+        }
       }
     });
     
@@ -160,18 +280,49 @@ function handleSearch() {
     card.style.display = hasVisibleTags ? 'block' : 'none';
   });
   
-  // Check if we need to show a "no results" message in alphabetical section
-  const alphabeticalNoResults = document.getElementById('alphabetical-no-results');
-  if (!matchFound) {
-    if (!alphabeticalNoResults) {
-      const noResults = document.createElement('div');
-      noResults.id = 'alphabetical-no-results';
-      noResults.className = 'no-results';
-      noResults.textContent = `No JavaScript concepts found matching "${searchInput.value}"`;
-      alphabeticalContainer.appendChild(noResults);
+  // Update search results feedback
+  updateSearchFeedback(searchTerm, matchFound, visibleCount);
+}
+
+/**
+ * Update search feedback and results count
+ */
+function updateSearchFeedback(searchTerm, matchFound, visibleCount) {
+  // Remove existing feedback
+  const existingFeedback = document.getElementById('search-feedback');
+  if (existingFeedback) {
+    existingFeedback.remove();
+  }
+  
+  // Add search feedback
+  if (searchTerm) {
+    const feedback = document.createElement('div');
+    feedback.id = 'search-feedback';
+    feedback.className = 'search-feedback';
+    
+    if (matchFound) {
+      feedback.innerHTML = `
+        <p>Found <strong>${visibleCount}</strong> concept${visibleCount !== 1 ? 's' : ''} matching "<strong>${searchTerm}</strong>"</p>
+      `;
+      feedback.style.color = 'var(--color-success)';
+    } else {
+      feedback.innerHTML = `
+        <p>No concepts found matching "<strong>${searchTerm}</strong>"</p>
+        <p><small>Try a different search term or browse by category</small></p>
+      `;
+      feedback.style.color = 'var(--text-muted)';
     }
-  } else if (alphabeticalNoResults) {
-    alphabeticalNoResults.remove();
+    
+    feedback.style.textAlign = 'center';
+    feedback.style.padding = 'var(--space-3)';
+    feedback.style.marginBottom = 'var(--space-4)';
+    feedback.style.borderRadius = 'var(--border-radius-md)';
+    feedback.style.backgroundColor = 'var(--bg-secondary)';
+    feedback.style.border = '1px solid var(--border-color)';
+    
+    // Insert after search container
+    const searchContainer = document.querySelector('.search-container').closest('.header-content');
+    searchContainer.parentNode.insertBefore(feedback, searchContainer.nextSibling);
   }
 }
 
@@ -188,8 +339,15 @@ function setupSmoothScrolling() {
         
         if (targetElement) {
           targetElement.scrollIntoView({
-            behavior: 'smooth'
+            behavior: 'smooth',
+            block: 'start'
           });
+          
+          // Add visual feedback
+          targetElement.style.transform = 'scale(1.02)';
+          setTimeout(() => {
+            targetElement.style.transform = '';
+          }, 300);
         }
       }
     });
@@ -204,10 +362,21 @@ function setupIntersectionObserver() {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
+        
+        // Add staggered animation for category cards
+        if (entry.target.classList.contains('category-card')) {
+          const cards = document.querySelectorAll('.category-card');
+          const index = Array.from(cards).indexOf(entry.target);
+          entry.target.style.animationDelay = `${index * 100}ms`;
+        }
+        
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1 });
+  }, { 
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
 
   document.querySelectorAll('.fade-in').forEach(el => {
     observer.observe(el);
@@ -229,7 +398,9 @@ function debounce(func, wait) {
   };
 }
 
-// Create page transition element
+/**
+ * Create page transition element with enhanced styling
+ */
 function createPageTransition() {
   // Check if it already exists
   if (!document.querySelector('.page-transition')) {
@@ -239,7 +410,9 @@ function createPageTransition() {
   }
 }
 
-// Set up tag link click handlers
+/**
+ * Set up tag link click handlers with improved UX
+ */
 function setupTagClickHandlers() {
   // Create the transition element
   createPageTransition();
@@ -252,16 +425,33 @@ function setupTagClickHandlers() {
     link.removeEventListener('click', handleTagClick);
     // Add new click listener
     link.addEventListener('click', handleTagClick);
+    
+    // Add enhanced hover effects
+    link.addEventListener('mouseenter', () => {
+      link.style.transform = link.classList.contains('tag-element') ? 'translateY(-2px)' : 'translateX(4px)';
+    });
+    
+    link.addEventListener('mouseleave', () => {
+      link.style.transform = '';
+    });
   });
 }
 
-// Handle tag click event
+/**
+ * Handle tag click event with smooth transition
+ */
 function handleTagClick(e) {
   const href = this.getAttribute('href');
   
   // Only handle links to HTML files (not external links)
   if (href && !href.startsWith('http') && href.endsWith('.html')) {
     e.preventDefault();
+    
+    // Add click feedback
+    this.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+      this.style.transform = '';
+    }, 150);
     
     // Get the transition element
     const pageTransition = document.querySelector('.page-transition');
@@ -281,7 +471,9 @@ function handleTagClick(e) {
   }
 }
 
-// Handle page transition removal
+/**
+ * Handle page transition removal
+ */
 function handlePageTransition() {
   const pageTransition = document.querySelector('.page-transition');
   
@@ -294,7 +486,9 @@ function handlePageTransition() {
   }
 }
 
-// Set up back button and page visibility handlers
+/**
+ * Set up back button and page visibility handlers
+ */
 function setupBackButtonHandler() {
   // Handle back/forward navigation
   window.addEventListener('pageshow', function(event) {
@@ -320,11 +514,49 @@ function setupBackButtonHandler() {
   });
 }
 
-// Initialize the application when DOM is fully loaded
-document.addEventListener('DOMContentLoaded', initApp);
+/**
+ * Add keyboard navigation support
+ */
+function setupKeyboardNavigation() {
+  document.addEventListener('keydown', (e) => {
+    // Navigate through tag elements with arrow keys
+    if (document.activeElement && document.activeElement.classList.contains('tag-element')) {
+      const allVisible = Array.from(document.querySelectorAll('.tag-element')).filter(el => 
+        el.parentElement.style.display !== 'none'
+      );
+      const currentIndex = allVisible.indexOf(document.activeElement);
+      
+      let nextIndex = currentIndex;
+      
+      switch(e.key) {
+        case 'ArrowRight':
+        case 'ArrowDown':
+          nextIndex = (currentIndex + 1) % allVisible.length;
+          break;
+        case 'ArrowLeft':
+        case 'ArrowUp':
+          nextIndex = currentIndex > 0 ? currentIndex - 1 : allVisible.length - 1;
+          break;
+        case 'Enter':
+        case ' ':
+          e.preventDefault();
+          document.activeElement.click();
+          return;
+      }
+      
+      if (nextIndex !== currentIndex) {
+        e.preventDefault();
+        allVisible[nextIndex].focus();
+      }
+    }
+  });
+}
 
-// Also add this immediate check for when the script loads
-document.addEventListener('DOMContentLoaded', function() {
+// Initialize the application when DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+  initApp();
+  setupKeyboardNavigation();
+  
   // Ensure any existing transition is cleared immediately
   setTimeout(handlePageTransition, 50);
 });
@@ -335,10 +567,4 @@ if (document.readyState === 'complete' || document.readyState === 'interactive')
     setupTagClickHandlers();
     handlePageTransition();
   }, 1);
-} else {
-  // Otherwise wait for DOMContentLoaded
-  document.addEventListener('DOMContentLoaded', () => {
-    setupTagClickHandlers();
-    handlePageTransition();
-  });
 }
