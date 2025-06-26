@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Learning Platform</title>
+    <link rel="stylesheet" href="tasks-js.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <button id="themeToggle" class="theme-btn">
+            <span class="theme-icon">🌙</span>
+        </button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <button id="backToHome" href="index.html" class="back-btn">← Back</button>
+            <div class="logo">
+                <span class="js-bracket">{</span>
+                <span class="js-text">JavaScript</span>
+                <span class="js-bracket">}</span>
+                <span class="learning-text">Learning Platform</span>
+            </div>
+            <button id="backToMain" class="back-btn" style="display: none;">← Back to Tasks</button>
+        </header>
+
+        <!-- Main Content -->
+        <main id="mainContent" class="main-content">
+            <!-- Progress Overview -->
+            <section class="progress-overview">
+                <h2>Your JavaScript Learning Progress</h2>
+                <div class="progress-sections">
+                    <div class="progress-section">
+                        <h3>Variables & Data Types</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="variablesProgress" data-progress="0"></div>
+                        </div>
+                        <span class="progress-text">0/10 completed</span>
+                    </div>
+                    <div class="progress-section">
+                        <h3>Functions & Scope</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="functionsProgress" data-progress="0"></div>
+                        </div>
+                        <span class="progress-text">0/10 completed</span>
+                    </div>
+                    <div class="progress-section">
+                        <h3>DOM Manipulation</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="domProgress" data-progress="0"></div>
+                        </div>
+                        <span class="progress-text">0/10 completed</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tasks Sections -->
+            <section class="tasks-container">
+                <!-- Variables & Data Types Section -->
+                <div class="task-section">
+                    <h2 class="section-title">Variables & Data Types</h2>
+                    <div class="task-card" data-level="variables" data-task="0">
+                        <div class="task-header">
+                            <h3>Variable Declaration</h3>
+                            <span class="task-status" id="variables-0-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Declare variables using let, const, and var with different data types.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="variables" data-task="1">
+                        <div class="task-header">
+                            <h3>String Manipulation</h3>
+                            <span class="task-status" id="variables-1-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Work with string methods like split, join, slice, and template literals.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="variables" data-task="2">
+                        <div class="task-header">
+                            <h3>Array Methods</h3>
+                            <span class="task-status" id="variables-2-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Use array methods like push, pop, map, filter, and reduce.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="variables" data-task="3">
+                        <div class="task-header">
+                            <h3>Object Properties</h3>
+                            <span class="task-status" id="variables-3-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Create objects with properties and methods, access using dot and bracket notation.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="variables" data-task="4">
+                        <div class="task-header">
+                            <h3>Type Conversion</h3>
+                            <span class="task-status" id="variables-4-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Convert between different data types using Number(), String(), Boolean().</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="variables" data-task="5">
+                        <div class="task-header">
+                            <h3>Destructuring Assignment</h3>
+                            <span class="task-status" id="variables-5-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Use destructuring to extract values from arrays and objects.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="variables" data-task="6">
+                        <div class="task-header">
+                            <h3>Spread Operator</h3>
+                            <span class="task-status" id="variables-6-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Use the spread operator to copy arrays and objects.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="variables" data-task="7">
+                        <div class="task-header">
+                            <h3>Conditional Statements</h3>
+                            <span class="task-status" id="variables-7-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Implement if-else statements and ternary operators.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="variables" data-task="8">
+                        <div class="task-header">
+                            <h3>Loops and Iteration</h3>
+                            <span class="task-status" id="variables-8-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Create for loops, while loops, and forEach iterations.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="variables" data-task="9">
+                        <div class="task-header">
+                            <h3>Error Handling</h3>
+                            <span class="task-status" id="variables-9-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Implement try-catch blocks for error handling.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                </div>
+
+                <!-- Functions & Scope Section -->
+                <div class="task-section">
+                    <h2 class="section-title">Functions & Scope</h2>
+                    <div class="task-card" data-level="functions" data-task="0">
+                        <div class="task-header">
+                            <h3>Function Declaration</h3>
+                            <span class="task-status" id="functions-0-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Create functions using function declarations and expressions.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="functions" data-task="1">
+                        <div class="task-header">
+                            <h3>Arrow Functions</h3>
+                            <span class="task-status" id="functions-1-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Use arrow function syntax and understand this binding.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="functions" data-task="2">
+                        <div class="task-header">
+                            <h3>Function Parameters</h3>
+                            <span class="task-status" id="functions-2-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Work with default parameters, rest parameters, and arguments object.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="functions" data-task="3">
+                        <div class="task-header">
+                            <h3>Higher-Order Functions</h3>
+                            <span class="task-status" id="functions-3-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Create functions that accept or return other functions.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="functions" data-task="4">
+                        <div class="task-header">
+                            <h3>Closures</h3>
+                            <span class="task-status" id="functions-4-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Understand and implement closures for data privacy.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="functions" data-task="5">
+                        <div class="task-header">
+                            <h3>Scope Chain</h3>
+                            <span class="task-status" id="functions-5-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Understand global, function, and block scope.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="functions" data-task="6">
+                        <div class="task-header">
+                            <h3>Callback Functions</h3>
+                            <span class="task-status" id="functions-6-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Implement callback functions for asynchronous operations.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="functions" data-task="7">
+                        <div class="task-header">
+                            <h3>Promises</h3>
+                            <span class="task-status" id="functions-7-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Create and handle promises with then, catch, and finally.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="functions" data-task="8">
+                        <div class="task-header">
+                            <h3>Async/Await</h3>
+                            <span class="task-status" id="functions-8-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Use async/await syntax for cleaner asynchronous code.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="functions" data-task="9">
+                        <div class="task-header">
+                            <h3>Module Patterns</h3>
+                            <span class="task-status" id="functions-9-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Implement module patterns and ES6 import/export.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                </div>
+
+                <!-- DOM Manipulation Section -->
+                <div class="task-section">
+                    <h2 class="section-title">DOM Manipulation</h2>
+                    <div class="task-card" data-level="dom" data-task="0">
+                        <div class="task-header">
+                            <h3>Element Selection</h3>
+                            <span class="task-status" id="dom-0-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Select elements using getElementById, querySelector, and querySelectorAll.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="dom" data-task="1">
+                        <div class="task-header">
+                            <h3>Content Manipulation</h3>
+                            <span class="task-status" id="dom-1-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Change element content using innerHTML, textContent, and innerText.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="dom" data-task="2">
+                        <div class="task-header">
+                            <h3>Attribute Manipulation</h3>
+                            <span class="task-status" id="dom-2-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Get and set element attributes using getAttribute and setAttribute.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="dom" data-task="3">
+                        <div class="task-header">
+                            <h3>CSS Style Manipulation</h3>
+                            <span class="task-status" id="dom-3-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Change element styles using the style property and classList.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="dom" data-task="4">
+                        <div class="task-header">
+                            <h3>Event Handling</h3>
+                            <span class="task-status" id="dom-4-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Add event listeners for click, change, and form events.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="dom" data-task="5">
+                        <div class="task-header">
+                            <h3>Element Creation</h3>
+                            <span class="task-status" id="dom-5-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Create new elements using createElement and appendChild.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="dom" data-task="6">
+                        <div class="task-header">
+                            <h3>Element Removal</h3>
+                            <span class="task-status" id="dom-6-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Remove elements using removeChild and remove methods.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="dom" data-task="7">
+                        <div class="task-header">
+                            <h3>Form Validation</h3>
+                            <span class="task-status" id="dom-7-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Validate form inputs and display error messages.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="dom" data-task="8">
+                        <div class="task-header">
+                            <h3>Local Storage</h3>
+                            <span class="task-status" id="dom-8-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Store and retrieve data using localStorage and sessionStorage.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                    <div class="task-card" data-level="dom" data-task="9">
+                        <div class="task-header">
+                            <h3>Dynamic Content</h3>
+                            <span class="task-status" id="dom-9-status">Not Started</span>
+                        </div>
+                        <p class="task-description">Create dynamic content that updates based on user interaction.</p>
+                        <button class="start-task-btn">Start Task</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Certificate Section -->
+            <section class="certificate-section">
+                <h2>Certificate Tracker</h2>
+                <div class="certificate-tracker">
+                    <div class="certificate-status" id="certificateStatus">
+                        <div class="lock-icon">🔒</div>
+                        <span>0/30 Tasks Completed</span>
+                    </div>
+                </div>
+
+                <!-- Sample Certificate Preview -->
+                <div class="certificate-preview">
+                    <h3>Sample Certificate Preview</h3>
+                    <div class="certificate-container">
+                        <img src="2.jpg" alt="Sample Certificate" class="certificate-image">
+                    </div>
+                </div>
+
+                <!-- Certificate Generator (hidden initially) -->
+                <div class="certificate-generator" id="certificateGenerator" style="display: none;">
+                    <h3>Generate Your Certificate</h3>
+                    <div class="name-input-container">
+                        <label for="userName">Enter your name:</label>
+                        <input type="text" id="userName" placeholder="John Doe" value="John Doe">
+                        <button id="generateCertificate" class="generate-btn">Generate Certificate</button>
+                    </div>
+                    
+                    <!-- Generated Certificate -->
+                    <div class="generated-certificate" id="generatedCertificate" style="display: none;">
+                        <canvas id="certificateCanvas" width="1200" height="900"></canvas>
+                        <div class="download-options">
+                            <h4>Download Certificate:</h4>
+                            <button onclick="downloadCertificate('png')" class="download-btn">PNG</button>
+                            <button onclick="downloadCertificate('jpg')" class="download-btn">JPG</button>
+                            <button onclick="downloadCertificate('jpeg')" class="download-btn">JPEG</button>
+                            <button onclick="downloadCertificate('pdf')" class="download-btn">PDF</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Editor Interface (hidden initially) -->
+        <div id="editorInterface" class="editor-interface" style="display: none;">
+            <div class="editor-container">
+                <div class="task-instructions" id="taskInstructions">
+                    <!-- Task instructions will be loaded here -->
+                </div>
+                
+                <div class="code-editor-container">
+                    <div class="editor-header">
+                        <div class="editor-tabs">
+                            <div class="tab active">script.js</div>
+                        </div>
+                        <div class="editor-actions">
+                            <button id="runCode" class="action-btn run-btn">▶ Run</button>
+                            <button id="validateCode" class="action-btn validate-btn">✓ Validate</button>
+                            <button id="backToTasks" class="action-btn back-btn">← Back</button>
+                        </div>
+                    </div>
+                    
+                    <div class="editor-content">
+                        <div class="code-editor">
+                            <textarea id="codeEditor" placeholder="Write your JavaScript code here..."></textarea>
+                        </div>
+                        
+                        <div class="preview-panel" id="previewPanel">
+                            <div class="preview-header">Console Output</div>
+                            <div id="consoleOutput" class="console-output"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="validation-result" id="validationResult" style="display: none;">
+                    <!-- Validation results will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="tasks-js.js"></script>
+    <script>
+        // Add event listener for the new back button
+        document.addEventListener('DOMContentLoaded', function() {
+            const backToHomeBtn = document.getElementById('backToHome');
+            if (backToHomeBtn) {
+                backToHomeBtn.addEventListener('click', function() {
+                    window.location.href = 'index.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
