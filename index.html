@@ -104,29 +104,34 @@
             transform: scale(1.05);
         }
 
-        /* Skin and Black Logo Colors */
-        .logo span:first-child {
-            color: black;
+        /* Logo Colors */
+        .logo span#myId {
+            color: #000000; /* Black for JS in light theme */
             font-weight: bold;
             transition: var(--transition-fast);
         }
 
         .logo span:last-child {
-            color: var(--dark-text);
+            color: var(--secondary-color);
             font-weight: normal;
             transition: var(--transition-fast);
             margin-left: 0.5rem;
         }
 
+        .dark-theme .logo span#myId {
+            color: #FFFFFF; /* White for JS in dark theme */
+        }
+
         .dark-theme .logo span:last-child {
-            color: var(--light-text);
+            color: var(--secondary-light);
         }
 
         /* Hover Effects */
-        .logo:hover span:first-child {
+        .logo:hover span#myId {
             color: var(--primary-dark);
         }
 
+        .dark-theme .logo:hover span#myId,
         .dark-theme .logo:hover span:last-child {
             color: #FFFFFF;
         }
@@ -1280,7 +1285,6 @@
                 <div class="js-logo-shape"></div>
             </div>
             <span id="myId">JS</span>
-
             <span>in my style</span>
         </a>
         <nav role="navigation" aria-label="Main navigation">
@@ -1663,7 +1667,7 @@
         themeToggle.classList.add('rotate');
         setTimeout(() => themeToggle.classList.remove('rotate'), 800);
     });
-document.getElementById('myId').style.color = 'black';
+
     // Code display scroll animation
     const codeDisplay = document.querySelector('.code-display');
     function animateCodeDisplay() {
